@@ -23,6 +23,16 @@ Route::get(
     [OrdemServicoController::class, 'index']
 )->name("ordemServico.index");
 
+Route::get(
+    '/ordem-de-servico/nova',
+    [OrdemServicoController::class, 'create']
+)->name("ordemServico.create");
+
+Route::post(
+    '/ordem-de-servico/store',
+    [OrdemServicoController::class, 'store']
+)->name("ordemServico.store");
+
 Route::fallback(function () {
-    return '<p>Página não encontrada. Retorne clicando <a href="/">aqui</a></p>';
+    return view("layouts.error");
 });

@@ -9,7 +9,18 @@ class OrdemServico extends Model
 {
     use HasFactory;
 
+
     protected $table = "ordens_servicos";
+
+    protected $fillable = [
+        'contrato_id',
+        'sei',
+        'sistema',
+        'qtd_estimada',
+        'qtd_realizada',
+        'metrica_id',
+        'nota_id',
+    ];
 
     public function metrica()
     {

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    container_name: syscop-db
+    ports:
+      - "33010:3306"
+    environment:
+      MYSQL_DATABASE: syscop
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: caio
+      MYSQL_PASSWORD: q1w2e3
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:

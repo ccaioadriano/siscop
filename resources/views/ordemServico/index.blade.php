@@ -6,19 +6,19 @@
 
         <!-- Botão para cadastrar nova ordem de serviço -->
         <div class="mb-4">
-            <a href="{{ route('ordemServico.create') }}" class="btn btn-primary">Cadastrar Nova Ordem de Serviço</a>
+            <a href="{{ route('ordemServico.create') }}" class="btn btn text-light bg-custom">Cadastrar Nova Ordem de Serviço</a>
         </div>
 
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Número</th>
-                        <th>Contrato</th>
-                        <th>SEI</th>
-                        <th>Sistema</th>
-                        <th>Realizada</th>
-                        <th>Nota Fiscal</th>
+                        <th>Nº OS:</th>
+                        <th>Nº CONTRATO</th>
+                        <th>Nº PROCESSO</th>
+                        <th>SISTEMA</th>
+                        <th>QTD. REALIZADA</th>
+                        <th>NOTA FISCAL</th>
                     </tr>
                 </thead>
                 <tbody>

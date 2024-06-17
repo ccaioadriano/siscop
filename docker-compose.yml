@@ -13,6 +13,51 @@ services:
       MYSQL_PASSWORD: q1w2e3
     volumes:
       - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: siscop-app
+    container_name: siscop-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      # Configurações de conexão com o banco de dados para o Laravel
+      DB_CONNECTION: mysql
+      DB_HOST: database
+      DB_PORT: 3306
+      DB_DATABASE: syscop
+      DB_USERNAME: caio
+      DB_PASSWORD: q1w2e3
+    depends_on:
+      - database
+    networks:
+      - laravel
+
+  webserver:
+    image: nginx:alpine
+    container_name: server
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+networks:
+  laravel:
+    driver: bridge
 
 volumes:
   dbdata:
+    driver: local

@@ -2,6 +2,10 @@
     background-color: #008EA7;
 }
 
+.btn:hover {
+    background-color: #006f83;
+}
+
 .nav-link:hover {
     color: #ffdd57 !important;
 }

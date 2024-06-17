@@ -22,14 +22,12 @@ class OrdemServicoController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate(
             [
-                'contrato_id' => 'required|',
-                'sei' => 'required|max:30',
+                'contrato_id' => 'required|max:10',
+                'sei' => 'required|max:23',
                 'sistema' => 'required',
-                'qtd_estimada' => 'required|numeric',
-                'qtd_realizada' => 'required|numeric',
+                'qtd_realizada' => 'nullable|required|numeric',
                 'metrica_id' => 'required',
                 'nota_id' => 'nullable|numeric',
             ],

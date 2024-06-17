@@ -1,5 +1,6 @@
 root = true
 
+# Configurações gerais aplicáveis a todos os arquivos
 [*]
 charset = utf-8
 end_of_line = lf
@@ -8,11 +9,35 @@ indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
+# Exceções para arquivos Markdown
 [*.md]
 trim_trailing_whitespace = false
 
+# Configurações para arquivos YAML
 [*.{yml,yaml}]
 indent_size = 2
 
+# Exceções para docker-compose.yml
 [docker-compose.yml]
 indent_size = 4
+
+# Configurações específicas para arquivos de código-fonte
+[*.{js,ts,jsx,tsx}]
+indent_size = 2
+
+[*.html]
+indent_size = 2
+
+[*.css]
+indent_size = 2
+
+[*.json]
+indent_size = 2
+
+# Configurações para arquivos PHP
+[*.php]
+indent_size = 4
+
+# Configurações para arquivos de configuração de editor (opcional)
+[*.editorconfig]
+indent_size = 2

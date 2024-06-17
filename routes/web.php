@@ -33,6 +33,13 @@ Route::post(
     [OrdemServicoController::class, 'store']
 )->name("ordemServico.store");
 
+Route::get(
+    '/notas-fiscais',
+    function () {
+        return "<p>Ola NF-E</p>";
+    }
+)->name("notaFiscal.index");
+
 Route::fallback(function () {
     return view("layouts.error");
 });

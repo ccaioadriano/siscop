@@ -22,7 +22,7 @@
                     <li class="nav-item"><a class="nav-link text-white" href="/">Início</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{ route('ordemServico.index') }}">Ordens
                             de Serviço</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#services">Notas Fiscais</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{route('notaFiscal.index')}}">Notas Fiscais</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="#contact">Contratos</a></li>
                 </ul>
             </nav>

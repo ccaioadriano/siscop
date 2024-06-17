@@ -16,7 +16,6 @@ class OrdemServico extends Model
         'contrato_id',
         'sei',
         'sistema',
-        'qtd_estimada',
         'qtd_realizada',
         'metrica_id',
         'nota_id',

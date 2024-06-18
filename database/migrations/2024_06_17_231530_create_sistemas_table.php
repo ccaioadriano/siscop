@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('ordens_servicos', function (Blueprint $table) {
-            $table->integer('qtd_estimada')->unsigned()->nullable()->change();
+        Schema::create('sistemas', function (Blueprint $table) {
+            $table->id();
+            $table->string("nome");
+            $table->timestamps();
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('ordens_servicos', function (Blueprint $table) {
-            $table->integer('qtd_estimada')->unsigned()->change();
-        });
+        Schema::dropIfExists('sistemas');
     }
 };

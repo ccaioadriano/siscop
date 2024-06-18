@@ -15,10 +15,11 @@ class OrdemServico extends Model
     protected $fillable = [
         'contrato_id',
         'sei',
-        'sistema',
+        'sistema_id',
         'qtd_realizada',
         'metrica_id',
         'nota_id',
+        'descricao'
     ];
 
     public function metrica()
@@ -34,5 +35,10 @@ class OrdemServico extends Model
     public function nota_fiscal()
     {
         return $this->belongsTo(NotaFiscal::class);
+    }
+
+    public function sistema()
+    {
+        return $this->belongsTo(Sistema::class);
     }
 }

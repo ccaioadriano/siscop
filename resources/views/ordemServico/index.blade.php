@@ -6,7 +6,8 @@
 
         <!-- Botão para cadastrar nova ordem de serviço -->
         <div class="mb-4">
-            <a href="{{ route('ordemServico.create') }}" class="btn btn text-light bg-custom">Cadastrar Nova Ordem de Serviço</a>
+            <a href="{{ route('ordemServico.create') }}" class="btn btn text-light bg-custom">Cadastrar Nova Ordem de
+                Serviço</a>
         </div>
 
         <div class="table-responsive">
@@ -27,7 +28,7 @@
                             <td>{{ $ordem->id }}</td>
                             <td>{{ $ordem->contrato_id }}</td>
                             <td>{{ $ordem->sei }}</td>
-                            <td>{{ $ordem->sistema }}</td>
+                            <td>{{ $ordem->sistema->nome }}</td>
                             <td>{{ $ordem->qtd_realizada . '/' . $ordem->metrica->tipo }}</td>
                             <td>
                                 @if ($ordem->nota_id != null)

@@ -6,56 +6,69 @@
     <main class="container mt-5">
         <h2 class="text-center mb-4">Cadastrar Nova Ordem de Serviço</h2>
 
-        <div class="row justify-content-center mb-4">
+        <div class="row justify-content-center mb-5">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Valor das métricas</h5>
-                        <p class="card-text">PF: R$ 10,00</p>
-                        <p class="card-text">HR: R$ 5,00</p>
+                        <p class="card-text">PF: <span id="ponto_funcao_label" class="fw-bold">R$ 0,00</span></p>
+                        <p class="card-text">HR: <span id="hora_label" class="fw-bold">R$ 0,00</span></p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <form action="{{ route('ordemServico.store') }}" method="POST">
+        <form action="{{ route('ordemServico.store') }}" method="POST" class="row g-3">
             @csrf
-            <fieldset class="row g-3">
-                <legend class="fw-bold">IDENTIFICAÇÃO</legend>
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label for="contrato_id" class="fw-bold">Nº CONTRATO</label>
-                        <input type="text"
-                            class="form-control form-control-sm @error('contrato_id') is-invalid @enderror" id="contrato_id"
-                            name="contrato_id" value="{{ old('contrato_id') }}">
-                        @error('contrato_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
 
-                    <div class="form-group col-md-4">
-                        <label for="sei" class="fw-bold">Nº PROCESSO</label>
-                        <input type="text" class="form-control form-control-sm @error('sei') is-invalid @enderror"
-                            id="sei" name="sei" value="{{ old('sei') }}">
-                        @error('sei')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="contrato_id" class="fw-bold">Nº CONTRATO</label>
+                    <select class="form-control form-control-sm @error('contrato_id') is-invalid @enderror" id="contrato_id"
+                        name="contrato_id">
+                        <option value="">Selecione um contrato</option>
+                        @foreach ($contratos_vigentes as $contrato_vigente)
+                            <option value="{{ $contrato_vigente->id }}"
+                                {{ old('contrato_id') == $contrato_vigente->id ? 'selected' : '' }}>
+                                {{ $contrato_vigente->id }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('contrato_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
-                <div class="row mt-3">
-                    <div class="form-group col-md-4">
-                        <label for="sistema" class="fw-bold">SISTEMA</label>
-                        <input type="text" class="form-control form-control-sm @error('sistema') is-invalid @enderror"
-                            id="sistema" name="sistema" value="{{ old('sistema') }}">
-                        @error('sistema')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
+                <div class="form-group col-md-4">
+                    <label for="sei" class="fw-bold">Nº PROCESSO</label>
+                    <input type="text" class="form-control form-control-sm @error('sei') is-invalid @enderror"
+                        id="sei" name="sei" value="{{ old('sei') }}">
+                    @error('sei')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
-
-                <div class="row mt-3">
-                    <div class="form-group col-md-2">
+            </div>
+            <div class="row mt-3">
+                <div class="form-group col-md-4">
+                    <label for="sistema" class="fw-bold">SISTEMA</label>
+                    <select class="form-control form-control-sm @error('sistema_id') is-invalid @enderror" id="sistema_id"
+                        name="sistema_id">
+                        <option value="">Selecione um sistema</option>
+                        @foreach ($sistemas as $sistema)
+                            <option value="{{ $sistema->id }}" {{ old('sistema_id') == $sistema->id ? 'selected' : '' }}>
+                                {{ $sistema->nome }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('sistema_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
+            <fieldset class="border rounded p-3">
+                <legend>Calcular métrica</legend>
+                <div class="row mt-3 gap-5">
+                    <div class="form-group col-md-4">
                         <label for="metrica_id" class="fw-bold">TIPO</label>
                         <select class="form-control form-control-sm @error('metrica_id') is-invalid @enderror"
                             id="metrica_id" name="metrica_id">
@@ -72,7 +85,7 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-4">
                         <label for="qtd_realizada" class="fw-bold">QTD. REALIZADA</label>
                         <input type="text"
                             class="form-control form-control-sm @error('qtd_realizada') is-invalid @enderror"
@@ -82,51 +95,83 @@
                         @enderror
                     </div>
 
-                    <div class="form-group col-md-2 align-self-end">
+                    <div class="col-md-2 align-self-end">
                         <button type="button" class="btn btn-primary" id="calcularBtn">Calcular</button>
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="form-group col-md-2">
+                <div class="mt-3">
+                    <div class="ms-1 align-self-end">
                         <label class="fw-bold">VALOR:</label>
                         <p id="valorCalculado" class="fw-bold">R$ 0,00</p>
                     </div>
                 </div>
-
-                <div class="form-group col-md-8 mt-3">
-                    <label for="descricao" class="fw-bold">Descrição do serviço</label>
-                    <textarea name="descricao" id="descricao" rows="5" class="form-control"></textarea>
-                </div>
             </fieldset>
 
-            <button type="submit" class="btn btn text-light bg-custom mt-3">Cadastrar</button>
+            <div class="form-group col-md-9 mt-3">
+                <label for="descricao" class="fw-bold">DESCRIÇÃO</label>
+                <textarea name="descricao" id="descricao" rows="5" class="form-control"></textarea>
+            </div>
+
+            <div class="row mt-3">
+                <button type="submit"
+                    class="form-group btn btn text-light bg-custom mt-3 col-md-2 ms-auto">Cadastrar</button>
+            </div>
         </form>
     </main>
 
     <script>
         $(document).ready(function() {
-            $('#calcularBtn').on('click', function() {
-                // Requisição AJAX para calcular o valor
-                var metricaId = $('#metrica_id').val();
-                var qtdRealizada = $('#qtd_realizada').val();
+            // $('#calcularBtn').on('click', function() {
+            //     // Requisição AJAX para calcular o valor
+            //     var metricaId = $('#metrica_id').val();
+            //     var qtdRealizada = $('#qtd_realizada').val();
 
+            //     $.ajax({
+            //         // Rota para o cálculo
+            //         method: 'POST',
+            //         data: {
+            //             _token: '{{ csrf_token() }}',
+            //             metrica_id: metricaId,
+            //             qtd_realizada: qtdRealizada
+            //         },
+            //         success: function(response) {
+            //             $('#valorCalculado').text('R$ ' + response.valor);
+            //         },
+            //         error: function(xhr) {
+            //             console.log(xhr.responseText);
+            //         }
+            //     });
+            // });
+
+            $('#contrato_id').change(function() {
+                var contrato_id = $(this).val(); // Pega o valor do número do contrato selecionado
                 $.ajax({
-                     // Rota para o cálculo
+                    url: '{{ route('contrato.getValores') }}',
                     method: 'POST',
                     data: {
                         _token: '{{ csrf_token() }}',
-                        metrica_id: metricaId,
-                        qtd_realizada: qtdRealizada
+                        contrato_id: contrato_id,
                     },
                     success: function(response) {
-                        $('#valorCalculado').text('R$ ' + response.valor);
+                        // Atualiza os valores na tela conforme necessário
+                        if (response.valorPF && response.valorHR != undefined) {
+                            $('#ponto_funcao_label').text('R$ ' + response.valorPF);
+                            $('#hora_label').text('R$ ' + response.valorHR);
+                        } else {
+                            $('#ponto_funcao_label').text('R$ 0,00');
+                            $('#hora_label').text('R$ 0,00');
+                        }
                     },
                     error: function(xhr) {
-                        console.log(xhr.responseText);
+                        $('#ponto_funcao_label').text('R$ 0,00');
+                        $('#hora_label').text('R$ 0,00');
+                        console.log(xhr.responseJSON.erro);
                     }
                 });
             });
+
+
         });
     </script>
 @endsection

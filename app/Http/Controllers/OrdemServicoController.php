@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrato;
 use App\Models\Metrica;
 use App\Models\OrdemServico;
+use App\Models\Sistema;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrdemServicoController extends Controller
@@ -17,16 +20,23 @@ class OrdemServicoController extends Controller
     public function create()
     {
         $metricas = Metrica::all();
-        return view("ordemServico.create", compact("metricas"));
+        $sistemas = Sistema::all();
+
+        //retorna somente os contratos vigentes
+        $contratos_vigentes = Contrato::where('data_inicio', '<=', Carbon::now())
+            ->where('data_fim', '>=', Carbon::now())
+            ->get();
+
+        return view("ordemServico.create", compact("metricas", "sistemas", "contratos_vigentes"));
     }
 
     public function store(Request $request)
     {
         $request->validate(
             [
-                'contrato_id' => 'required|max:10',
+                'contrato_id' => 'required',
                 'sei' => 'required|max:23',
-                'sistema' => 'required',
+                'sistema_id' => 'required',
                 'qtd_realizada' => 'nullable|required|numeric',
                 'metrica_id' => 'required',
                 'nota_id' => 'nullable|numeric',

@@ -9,12 +9,18 @@ class ContratoController extends Controller
 {
     public function getValores(Request $request)
     {
+
+        $request->validate([
+            'contrato_id' => 'required'
+        ],
+        [
+            'contrato_id.required' => 'O número do contrato não pode ser vazio.'
+        ]
+    );
+
         try {
             $contrato = Contrato::find($request->contrato_id);
 
-            if(!$contrato) {
-                throw new \Exception("Número de contrato nulo.");
-            }
 
             return response()->json([
                 'valorPF' => $contrato->valor_ponto_funcao,

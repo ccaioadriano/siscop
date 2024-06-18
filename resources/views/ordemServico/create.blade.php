@@ -87,7 +87,7 @@
 
                     <div class="form-group col-md-4">
                         <label for="qtd_realizada" class="fw-bold">QTD. REALIZADA</label>
-                        <input type="text"
+                        <input type="number"
                             class="form-control form-control-sm @error('qtd_realizada') is-invalid @enderror"
                             id="qtd_realizada" name="qtd_realizada" value="{{ old('qtd_realizada') }}">
                         @error('qtd_realizada')
@@ -103,7 +103,7 @@
                 <div class="mt-3">
                     <div class="ms-1 align-self-end">
                         <label class="fw-bold">VALOR:</label>
-                        <p id="valorCalculado" class="fw-bold">R$ 0,00</p>
+                        <p id="valorTotal" class="fw-bold">R$ 0,00</p>
                     </div>
                 </div>
             </fieldset>
@@ -122,28 +122,38 @@
 
     <script>
         $(document).ready(function() {
-            // $('#calcularBtn').on('click', function() {
-            //     // Requisição AJAX para calcular o valor
-            //     var metricaId = $('#metrica_id').val();
-            //     var qtdRealizada = $('#qtd_realizada').val();
+            $('#calcularBtn').on('click', function() {
+                // Requisição AJAX para calcular o valor
+                var metrica_id = $('#metrica_id').val();
+                var contrato_id = $('#contrato_id').val() != null ? $('#contrato_id').val() : 0;
+                var qtd_realizada = $('#qtd_realizada').val();
 
-            //     $.ajax({
-            //         // Rota para o cálculo
-            //         method: 'POST',
-            //         data: {
-            //             _token: '{{ csrf_token() }}',
-            //             metrica_id: metricaId,
-            //             qtd_realizada: qtdRealizada
-            //         },
-            //         success: function(response) {
-            //             $('#valorCalculado').text('R$ ' + response.valor);
-            //         },
-            //         error: function(xhr) {
-            //             console.log(xhr.responseText);
-            //         }
-            //     });
-            // });
+                $.ajax({
+                    // Rota para o cálculo
+                    url: '{{ route('ordemServico.calcularMetrica') }}',
+                    method: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        metrica_id: metrica_id,
+                        qtd_realizada: qtd_realizada,
+                        contrato_id: contrato_id
+                    },
+                    success: function(response) {
+                        if (response.valor_total && response.valor_total != undefined) {
+                            $('#valorTotal').text('R$ ' + response.valor_total);
+                        }else {
+                            $('#valorTotal').text('R$ 0,00');
+                        }
+                    },
+                    error: function(xhr) {
+                        $('#valorTotal').text('R$ 0,00');
+                        console.log(xhr.responseJSON.message);
+                        alert(xhr.responseJSON.message);
+                    }
+                });
+            });
 
+            //busca os valores do contrato
             $('#contrato_id').change(function() {
                 var contrato_id = $(this).val(); // Pega o valor do número do contrato selecionado
                 $.ajax({
@@ -166,7 +176,8 @@
                     error: function(xhr) {
                         $('#ponto_funcao_label').text('R$ 0,00');
                         $('#hora_label').text('R$ 0,00');
-                        console.log(xhr.responseJSON.erro);
+                        console.log(xhr.responseJSON.message);
+                        alert(xhr.responseJSON.message);
                     }
                 });
             });

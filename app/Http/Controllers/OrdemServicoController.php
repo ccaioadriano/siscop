@@ -48,4 +48,54 @@ class OrdemServicoController extends Controller
         $ordemServico->save();
         return redirect(route("ordemServico.index"));
     }
+
+    public function calcularMetrica(Request $request)
+    {
+
+        $request->validate(
+            [
+                'metrica_id' => 'required',
+                'contrato_id' => 'required',
+                'qtd_realizada' => 'required|numeric',
+            ],
+            [
+
+                'contrato_id.required' => 'O número do contrato não pode ser vazio.',
+                'metrica_id.required' => 'O Campo métrica é obrigatório.',
+                'qtd_realizada.required'=> 'O campo qtd realizada é obrigatório.',
+                'qtd_realizada.numeric'=> 'O campo qtd realizada precisa ser um número.',
+            ]   
+        );
+
+        try {
+            $contrato = Contrato::find($request->contrato_id);
+            $metrica = Metrica::find($request->metrica_id);
+            $qtd_realizada = $request->qtd_realizada;
+            $valor_total = 0;
+
+            switch ($metrica->tipo) {
+                case 'PF':
+
+                    $valor_total = $contrato->valor_ponto_funcao * $qtd_realizada;
+                    break;
+                case 'HR':
+
+                    $valor_total = $contrato->valor_hora * $qtd_realizada;
+                    break;
+            }
+
+            if (($contrato == null) || ($contrato->id == 0)) {
+                throw new \Exception("Número de contrato nulo e deve ser diferente de 0.");
+            }
+
+            return response()->json([
+                'valor_total' => $valor_total,
+            ]);
+            
+        } catch (\Exception $exception) {
+            return response()->json(['erro' => $exception->getMessage()], 500);
+        }
+    }
+
+    //edit
 }

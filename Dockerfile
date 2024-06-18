@@ -44,6 +44,10 @@ RUN chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 # Otimizar a aplicação Laravel
 RUN php artisan optimize
 
+RUN php artisan migrate
+
+RUN php artisan db:seed
+
 # Expor a porta
 EXPOSE 9000
 

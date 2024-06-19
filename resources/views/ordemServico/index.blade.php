@@ -20,6 +20,7 @@
                         <th>SISTEMA</th>
                         <th>QTD. REALIZADA</th>
                         <th>NOTA FISCAL</th>
+                        <th>VALOR DA OS</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,6 +38,7 @@
                                     <span class="text-muted">N/A</span>
                                 @endif
                             </td>
+                            <td>R$ {{ number_format($ordem->valor_total, 2, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

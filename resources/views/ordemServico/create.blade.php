@@ -11,8 +11,8 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">Valor das métricas</h5>
-                        <p class="card-text">PF: <span id="ponto_funcao_label" class="fw-bold">R$ 0,00</span></p>
-                        <p class="card-text">HR: <span id="hora_label" class="fw-bold">R$ 0,00</span></p>
+                        <p class="card-text">PF: <span id="ponto_funcao_label" style="color: red">R$ 0,00</span></p>
+                        <p class="card-text">HR: <span id="hora_label" style="color: red">R$ 0,00</span></p>
                     </div>
                 </div>
             </div>
@@ -100,11 +100,14 @@
                     </div>
                 </div>
 
-                <div class="mt-3">
-                    <div class="ms-1 align-self-end">
+                <div class="row mt-3">
+
+                    <div class="col-md-4">
                         <label class="fw-bold">VALOR:</label>
-                        <p id="valorTotal" class="fw-bold">R$ 0,00</p>
+                        <input type="text" id="valorTotal" name="valor_total" class="form-control form-control-sm"
+                            value="{{ old('valor_total') }}" readonly></input>
                     </div>
+
                 </div>
             </fieldset>
 
@@ -140,13 +143,13 @@
                     },
                     success: function(response) {
                         if (response.valor_total && response.valor_total != undefined) {
-                            $('#valorTotal').text('R$ ' + response.valor_total);
-                        }else {
-                            $('#valorTotal').text('R$ 0,00');
+                            $('#valorTotal').val(response.valor_total);
+                        } else {
+                            $('#valorTotal').val('R$ 0,00');
                         }
                     },
                     error: function(xhr) {
-                        $('#valorTotal').text('R$ 0,00');
+                        $('#valorTotal').val('R$ 0,00');
                         console.log(xhr.responseJSON.message);
                         alert(xhr.responseJSON.message);
                     }
@@ -166,8 +169,8 @@
                     success: function(response) {
                         // Atualiza os valores na tela conforme necessário
                         if (response.valorPF && response.valorHR != undefined) {
-                            $('#ponto_funcao_label').text('R$ ' + response.valorPF);
-                            $('#hora_label').text('R$ ' + response.valorHR);
+                            $('#ponto_funcao_label').text(response.valorPF);
+                            $('#hora_label').text(response.valorHR);
                         } else {
                             $('#ponto_funcao_label').text('R$ 0,00');
                             $('#hora_label').text('R$ 0,00');
@@ -182,6 +185,8 @@
                 });
             });
 
+
+            $('#sei').inputmask('9999.99.9999999/9999-99')
 
         });
     </script>

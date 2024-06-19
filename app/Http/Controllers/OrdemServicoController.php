@@ -35,7 +35,7 @@ class OrdemServicoController extends Controller
         $request->validate(
             [
                 'contrato_id' => 'required',
-                'sei' => 'required|max:23',
+                'sei' => 'required',
                 'sistema_id' => 'required',
                 'qtd_realizada' => 'nullable|required|numeric',
                 'metrica_id' => 'required',
@@ -44,7 +44,8 @@ class OrdemServicoController extends Controller
         );
 
         $ordemServico = new OrdemServico();
-        $ordemServico->fill($request->all());
+        $ordemServico->fill($request->except('valor_total'));
+        $ordemServico->valor_total = $this->clearNumbers($request->valor_total);
         $ordemServico->save();
         return redirect(route("ordemServico.index"));
     }
@@ -62,9 +63,9 @@ class OrdemServicoController extends Controller
 
                 'contrato_id.required' => 'O número do contrato não pode ser vazio.',
                 'metrica_id.required' => 'O Campo métrica é obrigatório.',
-                'qtd_realizada.required'=> 'O campo qtd realizada é obrigatório.',
-                'qtd_realizada.numeric'=> 'O campo qtd realizada precisa ser um número.',
-            ]   
+                'qtd_realizada.required' => 'O campo qtd realizada é obrigatório.',
+                'qtd_realizada.numeric' => 'O campo qtd realizada precisa ser um número.',
+            ]
         );
 
         try {
@@ -89,9 +90,8 @@ class OrdemServicoController extends Controller
             }
 
             return response()->json([
-                'valor_total' => $valor_total,
+                'valor_total' => $this->formatCurrency($valor_total),
             ]);
-            
         } catch (\Exception $exception) {
             return response()->json(['erro' => $exception->getMessage()], 500);
         }

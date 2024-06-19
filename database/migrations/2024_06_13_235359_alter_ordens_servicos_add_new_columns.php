@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('ordens_servicos', function (Blueprint $table) {
             $table->unsignedBigInteger("contrato_id");
 
-            $table->string("sei", 20);
+            $table->string("sei", 30);
             $table->integer("qtd_estimada", unsigned: true)->default(0);
             $table->integer("qtd_realizada", unsigned: true)->default(0);
             $table->string("sistema");

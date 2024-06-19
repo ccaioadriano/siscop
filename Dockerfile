@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd
 
-# Instalar extensões PHP
-RUN docker-php-ext-install -j$(nproc) pdo_mysql mbstring zip exif pcntl bcmath
+    # Instalar extensões PHP
+    RUN docker-php-ext-install -j$(nproc) pdo_mysql mbstring zip exif pcntl bcmath
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -43,10 +43,6 @@ RUN chmod -R 755 /var/www/storage /var/www/bootstrap/cache
 
 # Otimizar a aplicação Laravel
 RUN php artisan optimize
-
-RUN php artisan migrate
-
-RUN php artisan db:seed
 
 # Expor a porta
 EXPOSE 9000

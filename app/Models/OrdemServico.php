@@ -19,7 +19,8 @@ class OrdemServico extends Model
         'qtd_realizada',
         'metrica_id',
         'nota_id',
-        'descricao'
+        'descricao',
+        'valor_total'
     ];
 
     public function metrica()

@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sistemas', function (Blueprint $table) {
-            $table->id();
-            $table->string("nome");
-            $table->timestamps();
+        Schema::table('ordens_servicos', function (Blueprint $table) {
+            $table->decimal('valor_total')->default(0);
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sistemas');
+        Schema::table('ordens_servicos', function (Blueprint $table) {
+            $table->dropColumn(['valor_total']);
+        });
     }
 };

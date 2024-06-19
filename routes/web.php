@@ -36,6 +36,10 @@ Route::post(
 
 Route::post('/retorna-valores', [ContratoController::class, 'getValores'])->name('contrato.getValores');
 
+Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('ordemServico.calcularMetrica');
+
+//update
+
 Route::fallback(function () {
     return view("layouts.error");
 });

@@ -19,26 +19,17 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get(
-    '/ordens-de-servicos',
-    [OrdemServicoController::class, 'index']
-)->name("ordemServico.index");
+Route::get('/ordens-de-servicos', [OrdemServicoController::class, 'index'])->name("ordemServico.index");
 
-Route::get(
-    '/ordem-de-servico/nova',
-    [OrdemServicoController::class, 'create']
-)->name("ordemServico.create");
+Route::get('/ordem-de-servico/nova', [OrdemServicoController::class, 'create'])->name("ordemServico.create");
 
-Route::post(
-    '/ordem-de-servico/store',
-    [OrdemServicoController::class, 'store']
-)->name("ordemServico.store");
+Route::get('/ordem-de-servico/{id}', [OrdemServicoController::class, 'show'])->name('ordemServico.show');
+
+Route::post('/ordem-de-servico/store', [OrdemServicoController::class, 'store'])->name("ordemServico.store");
 
 Route::post('/retorna-valores', [ContratoController::class, 'getValores'])->name('contrato.getValores');
 
 Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('ordemServico.calcularMetrica');
-
-//update
 
 Route::fallback(function () {
     return view("layouts.error");

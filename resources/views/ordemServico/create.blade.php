@@ -87,7 +87,7 @@
 
                     <div class="form-group col-md-4">
                         <label for="qtd_realizada" class="fw-bold">QTD. REALIZADA</label>
-                        <input type="number"
+                        <input type="text"
                             class="form-control form-control-sm @error('qtd_realizada') is-invalid @enderror"
                             id="qtd_realizada" name="qtd_realizada" value="{{ old('qtd_realizada') }}">
                         @error('qtd_realizada')
@@ -96,7 +96,7 @@
                     </div>
 
                     <div class="col-md-2 align-self-end">
-                        <button type="button" class="btn btn-primary" id="calcularBtn">Calcular</button>
+                        <button type="button" class="btn text-light bg-custom" id="calcularBtn">Calcular</button>
                     </div>
                 </div>
 
@@ -118,11 +118,13 @@
 
             <div class="row mt-3">
                 <button type="submit"
-                    class="form-group btn btn text-light bg-custom mt-3 col-md-2 ms-auto">Cadastrar</button>
+                    class="form-group btn text-light bg-custom mt-3 col-md-2 ms-auto">Cadastrar</button>
             </div>
         </form>
     </main>
-
+@endsection
+@section('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/inputmask/dist/jquery.inputmask.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#calcularBtn').on('click', function() {

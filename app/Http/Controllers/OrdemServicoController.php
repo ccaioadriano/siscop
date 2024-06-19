@@ -11,9 +11,20 @@ use Illuminate\Http\Request;
 
 class OrdemServicoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ordens = OrdemServico::all();
+        $query = OrdemServico::query();
+
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('id', 'LIKE', "%{$search}%")
+                ->orWhere('contrato_id', 'LIKE', "%{$search}%")
+                ->orWhereHas('sistema', function ($q) use ($search) {
+                    $q->where('nome', 'LIKE', "%{$search}%");
+                });
+        }
+
+        $ordens = $query->paginate(10);
         return view("ordemServico.index", compact("ordens"));
     }
 
@@ -30,6 +41,12 @@ class OrdemServicoController extends Controller
         return view("ordemServico.create", compact("metricas", "sistemas", "contratos_vigentes"));
     }
 
+    public function show(int $id)
+    {
+        $ordem = OrdemServico::find($id);
+        return view("ordemServico.show", compact('ordem'));
+    }
+
     public function store(Request $request)
     {
         $request->validate(
@@ -37,9 +54,8 @@ class OrdemServicoController extends Controller
                 'contrato_id' => 'required',
                 'sei' => 'required',
                 'sistema_id' => 'required',
-                'qtd_realizada' => 'nullable|required|numeric',
+                'qtd_realizada' => 'required',
                 'metrica_id' => 'required',
-                'nota_id' => 'nullable|numeric',
             ],
         );
 
@@ -57,14 +73,13 @@ class OrdemServicoController extends Controller
             [
                 'metrica_id' => 'required',
                 'contrato_id' => 'required',
-                'qtd_realizada' => 'required|numeric',
+                'qtd_realizada' => 'required',
             ],
             [
 
                 'contrato_id.required' => 'O número do contrato não pode ser vazio.',
                 'metrica_id.required' => 'O Campo métrica é obrigatório.',
                 'qtd_realizada.required' => 'O campo qtd realizada é obrigatório.',
-                'qtd_realizada.numeric' => 'O campo qtd realizada precisa ser um número.',
             ]
         );
 
@@ -86,7 +101,7 @@ class OrdemServicoController extends Controller
             }
 
             if (($contrato == null) || ($contrato->id == 0)) {
-                throw new \Exception("Número de contrato nulo e deve ser diferente de 0.");
+                throw new \Exception("Número de contrato nulo.");
             }
 
             return response()->json([

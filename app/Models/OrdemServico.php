@@ -17,6 +17,7 @@ class OrdemServico extends Model
         'sei',
         'sistema_id',
         'qtd_realizada',
+        'qtd_estimada',
         'metrica_id',
         'nota_id',
         'descricao',

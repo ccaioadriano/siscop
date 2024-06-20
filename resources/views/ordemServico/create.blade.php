@@ -66,7 +66,7 @@
                 </div>
             </div>
             <fieldset class="border rounded p-3">
-                <legend>Calcular métrica</legend>
+                <legend>Calcular estimativa</legend>
                 <div class="row mt-3 gap-5">
                     <div class="form-group col-md-4">
                         <label for="metrica_id" class="fw-bold">TIPO</label>
@@ -86,24 +86,26 @@
                     </div>
 
                     <div class="form-group col-md-4">
-                        <label for="qtd_realizada" class="fw-bold">QTD. REALIZADA</label>
+                        <label for="qtd_estimada" class="fw-bold">QTD. ESTIMADA</label>
                         <input type="text"
-                            class="form-control form-control-sm @error('qtd_realizada') is-invalid @enderror"
-                            id="qtd_realizada" name="qtd_realizada" value="{{ old('qtd_realizada') }}">
-                        @error('qtd_realizada')
+                            class="form-control form-control-sm @error('qtd_estimada') is-invalid @enderror"
+                            id="qtd_estimada" name="qtd_estimada" value="{{ old('qtd_estimada') }}">
+                        @error('qtd_estimada')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+
+
 
                     <div class="col-md-2 align-self-end">
                         <button type="button" class="btn text-light bg-custom" id="calcularBtn">Calcular</button>
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-3 gap-5">
 
-                    <div class="col-md-4">
-                        <label class="fw-bold">VALOR:</label>
+                    <div class="form-group col-md-4">
+                        <label class="fw-bold">VALOR ESTIMADO:</label>
                         <input type="text" id="valorTotal" name="valor_total" class="form-control form-control-sm"
                             value="{{ old('valor_total') }}" readonly></input>
                     </div>
@@ -117,8 +119,7 @@
             </div>
 
             <div class="row mt-3">
-                <button type="submit"
-                    class="form-group btn text-light bg-custom mt-3 col-md-2 ms-auto">Cadastrar</button>
+                <button type="submit" class="form-group btn text-light bg-custom mt-3 col-md-2 ms-auto">Cadastrar</button>
             </div>
         </form>
     </main>
@@ -131,7 +132,7 @@
                 // Requisição AJAX para calcular o valor
                 var metrica_id = $('#metrica_id').val();
                 var contrato_id = $('#contrato_id').val() != null ? $('#contrato_id').val() : 0;
-                var qtd_realizada = $('#qtd_realizada').val();
+                var qtd_estimada = $('#qtd_estimada').val();
 
                 $.ajax({
                     // Rota para o cálculo
@@ -140,7 +141,7 @@
                     data: {
                         _token: '{{ csrf_token() }}',
                         metrica_id: metrica_id,
-                        qtd_realizada: qtd_realizada,
+                        qtd_estimada: qtd_estimada,
                         contrato_id: contrato_id
                     },
                     success: function(response) {

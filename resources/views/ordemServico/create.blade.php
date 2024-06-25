@@ -162,6 +162,8 @@
             //busca os valores do contrato
             $('#contrato_id').change(function() {
                 var contrato_id = $(this).val(); // Pega o valor do número do contrato selecionado
+                
+                
                 $.ajax({
                     url: '{{ route('contrato.getValores') }}',
                     method: 'POST',

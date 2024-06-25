@@ -3,7 +3,7 @@
 @section('content')
     <main class="container mt-5">
         <h2 class="mb-4">Ordens de Serviço</h2>
-
+        @include('layouts.partials.flash-messages')
         <!-- Formulário de Pesquisa -->
         <div class="mb-4 d-flex justify-content-end">
             <form action="{{ route('ordemServico.index') }}" method="GET" class="d-flex" style="width: 400px;">

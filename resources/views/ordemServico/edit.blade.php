@@ -41,7 +41,6 @@
                                     <h6 class="fw-bold">Nº CONTRATO:</h6>
                                     <select class="form-control form-control-sm @error('contrato_id') is-invalid @enderror"
                                         id="contrato_id" name="contrato_id">
-                                        <option value="">Selecione um contrato</option>
                                         @foreach ($contratos_vigentes as $contrato_vigente)
                                             <option value="{{ $contrato_vigente->id }}"
                                                 {{ old('contrato_id', $ordem->contrato_id) == $contrato_vigente->id ? 'selected' : '' }}>
@@ -68,7 +67,6 @@
                                     <h6 class="fw-bold">SISTEMA:</h6>
                                     <select class="form-control form-control-sm @error('sistema_id') is-invalid @enderror"
                                         id="sistema_id" name="sistema_id">
-                                        <option value="">Selecione um sistema</option>
                                         @foreach ($sistemas as $sistema)
                                             <option value="{{ $sistema->id }}"
                                                 {{ old('sistema_id', $ordem->sistema_id) == $sistema->id ? 'selected' : '' }}>
@@ -159,13 +157,65 @@
 @section('scripts')
     <script src="https://cdn.jsdelivr.net/npm/inputmask/dist/jquery.inputmask.min.js"></script>
     <script>
+        $(document).ready(function() {
+            var contrato_id = $('#contrato_id').val() != null ? $('#contrato_id').val() : null;
+            var metrica_id = $('#metrica_id').val();
+            var qtd_realizada = $('#qtd_realizada').val() > 0 ? $('#qtd_realizada').val() : $('#qtd_estimada')
+        .val();
+
+            $.ajax({
+                url: '{{ route('contrato.getValores') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    contrato_id: contrato_id,
+                },
+                success: function(response) {
+                    // Atualiza os valores na tela conforme necessário
+                    if (response.valorPF && response.valorHR != undefined) {
+                        $('#ponto_funcao_label').text(response.valorPF);
+                        $('#hora_label').text(response.valorHR);
+                    } else {
+                        $('#ponto_funcao_label').text('R$ 0,00');
+                        $('#hora_label').text('R$ 0,00');
+                    }
+                },
+                error: function(xhr) {
+                    $('#ponto_funcao_label').text('R$ 0,00');
+                    $('#hora_label').text('R$ 0,00');
+                    console.log(xhr.responseJSON.message);
+                    alert(xhr.responseJSON.message);
+                }
+            });
+
+
+            $.ajax({
+                // Rota para o cálculo
+                url: '{{ route('ordemServico.calcularMetrica') }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    metrica_id: metrica_id,
+                    qtd_realizada: qtd_realizada,
+                    contrato_id: contrato_id
+                },
+                success: function(response) {
+                    $('#valor_total').val(response.valor_total);
+                },
+                error: function(xhr) {
+                    $('#valor_total').val('R$ 0,00');
+                    console.log(xhr.responseJSON.message);
+                    alert(xhr.responseJSON.message);
+                }
+            });
+        });
+
         $('#calcularBtn').on('click', function() {
             // Requisição AJAX para calcular o valor
             var metrica_id = $('#metrica_id').val();
             var contrato_id = $('#contrato_id').val() != null ? $('#contrato_id').val() : 0;
             var qtd_realizada = $('#qtd_realizada').val() > 0 ? $('#qtd_realizada').val() : $('#qtd_estimada')
                 .val();
-            console.log(contrato_id, metrica_id, qtd_realizada);
 
             $.ajax({
                 // Rota para o cálculo
@@ -192,7 +242,6 @@
             var metrica_id = $('#metrica_id').val();
             var qtd_realizada = $('#qtd_realizada').val() > 0 ? $('#qtd_realizada').val() : $('#qtd_estimada')
                 .val();
-            console.log(contrato_id, metrica_id, qtd_realizada);
 
             $.ajax({
                 // Rota para o cálculo
@@ -212,7 +261,9 @@
                     console.log(xhr.responseJSON.message);
                     alert(xhr.responseJSON.message);
                 }
-            }); // Pega o valor do número do contrato selecionado
+            });
+
+            // Pega o valor do número do contrato selecionado
             $.ajax({
                 url: '{{ route('contrato.getValores') }}',
                 method: 'POST',

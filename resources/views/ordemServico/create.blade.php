@@ -95,8 +95,6 @@
                         @enderror
                     </div>
 
-
-
                     <div class="col-md-2 align-self-end">
                         <button type="button" class="btn text-light bg-custom" id="calcularBtn">Calcular</button>
                     </div>
@@ -162,8 +160,8 @@
             //busca os valores do contrato
             $('#contrato_id').change(function() {
                 var contrato_id = $(this).val(); // Pega o valor do número do contrato selecionado
-                
-                
+
+
                 $.ajax({
                     url: '{{ route('contrato.getValores') }}',
                     method: 'POST',

@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Contrato extends Model
 {
     use HasFactory;
+
+    public function vigencias()
+    {
+        return $this->hasMany(Vigencia::class)->orderBy('data_fim', 'asc');
+    }
+
+    public function ultimaVigencia()
+    {
+        return $this->vigencias()->orderBy('data_fim', 'desc')->first();
+    }
 }

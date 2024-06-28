@@ -34,11 +34,11 @@ class OrdemServicoController extends Controller
         $metricas = Metrica::all();
         $sistemas = Sistema::all();
 
-        //retorna somente os contratos vigentes
-        $contratos_vigentes = Contrato::where('data_inicio', '<=', Carbon::now())
-            ->where('data_fim', '>=', Carbon::now())
-            ->get();
-
+        //retorna somente os contratos com vigencia ativa
+        $contratos_vigentes = Contrato::whereHas('vigencias', function ($query) {
+            $query->where('data_inicio', '<=', Carbon::now())
+                ->where('data_fim', '>=', Carbon::now());
+        })->get();
         return view("ordemServico.create", compact("metricas", "sistemas", "contratos_vigentes"));
     }
 
@@ -72,10 +72,10 @@ class OrdemServicoController extends Controller
         $ordem = OrdemServico::find($id);
         $ordem->valor_total = number_format($ordem->valor_total, 2, ',', '.');
         $metricas = Metrica::all();
-        // $contratos_vigentes = Contrato::where('data_inicio', '<=', Carbon::now())
-        //     ->where('data_fim', '>=', Carbon::now())
-        //     ->get();
-        $contratos_vigentes = Contrato::all();
+        $contratos_vigentes = Contrato::whereHas('vigencias', function ($query) {
+            $query->where('data_inicio', '<=', Carbon::now())
+                ->where('data_fim', '>=', Carbon::now());
+        })->get();
 
         $sistemas = Sistema::all();
         $notas_fiscais = NotaFiscal::all();
@@ -129,25 +129,28 @@ class OrdemServicoController extends Controller
         try {
             $contrato = Contrato::find($request->contrato_id);
             $metrica = Metrica::find($request->metrica_id);
+            $vigencia_contrato = $contrato->vigencias()->where('data_inicio', '<=', Carbon::now())
+                ->where('data_fim', '>=', Carbon::now())
+                ->first();
             $valor_total = 0;
 
             switch ($metrica->tipo) {
                 case 'PF':
 
                     if ($request->qtd_realizada > 0) {
-                        $valor_total = $contrato->valor_ponto_funcao * $request->qtd_realizada;
+                        $valor_total = $vigencia_contrato->valor_ponto_funcao * $request->qtd_realizada;
                     } else {
 
-                        $valor_total = $contrato->valor_ponto_funcao * $request->qtd_estimada;
+                        $valor_total = $vigencia_contrato->valor_ponto_funcao * $request->qtd_estimada;
                     }
 
                     break;
                 case 'HR':
                     if ($request->qtd_realizada > 0) {
-                        $valor_total = $contrato->valor_hora * $request->qtd_realizada;
+                        $valor_total = $vigencia_contrato->valor_hora * $request->qtd_realizada;
                     } else {
 
-                        $valor_total = $contrato->valor_hora * $request->qtd_estimada;
+                        $valor_total = $vigencia_contrato->valor_hora * $request->qtd_estimada;
                     }
                     break;
             }

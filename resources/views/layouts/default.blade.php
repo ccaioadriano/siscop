@@ -27,7 +27,7 @@
                             de Serviço</a></li>
                     <li class="nav-item"><a class="nav-link text-white" href="{{-- route('notaFiscal.index') --}} /">Notas
                             Fiscais</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#contact">Contratos</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="{{ route('contrato.index') }}">Contratos</a></li>
                 </ul>
             </nav>
         </div>

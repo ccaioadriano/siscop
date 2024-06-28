@@ -33,6 +33,9 @@ Route::post('/retorna-valores', [ContratoController::class, 'getValores'])->name
 
 Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('ordemServico.calcularMetrica');
 
+Route::get('/contratos', [ContratoController::class, 'index'])->name('contrato.index');
+Route::get('/contratos/{id}', [ContratoController::class, 'show'])->name('contrato.show');
+
 Route::fallback(function () {
     return view("layouts.error");
 });

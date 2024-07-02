@@ -57,9 +57,11 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                <a href="{{-- route('contrato.edit', $contrato->id) --}}" class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Adicionar Vigência
-                                </a>
+                                <div class="row">
+                                    <a href="{{ route('contrato.vigencia.create', $contrato->id) }}" class="btn btn-success col-md-2 ms-auto me-3">
+                                        <i class="fas fa-plus"></i> Adicionar Vigência
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>

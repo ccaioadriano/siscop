@@ -19,7 +19,7 @@
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th>ID</th>
+                        <th>Nº CONTRATO</th>
                         <th>VIGÊNCIA</th>
                         <th>PONTO DE FUNÇÃO</th>
                         <th>HORA</th>

@@ -11,7 +11,7 @@ class Contrato extends Model
 
     public function vigencias()
     {
-        return $this->hasMany(Vigencia::class)->orderBy('data_fim', 'asc');
+        return $this->hasMany(Vigencia::class)->orderBy('data_fim', 'desc');
     }
 
     public function ultimaVigencia()

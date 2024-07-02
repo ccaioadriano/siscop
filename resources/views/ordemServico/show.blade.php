@@ -12,8 +12,9 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h3 class="card-title mb-0">Ordem de Serviço: <span
                                     style="color: #ffdd57">{{ $ordem->id }}</span></h3>
-                            <a href="{{ route('ordemServico.edit', $ordem->id) }}" style="color: #ffdd57">
-                                <i class="fas fa-edit"></i></a>
+                            <a href="{{ route('ordemServico.edit', $ordem->id) }}" class="btn btn-warning">
+                                <i class="fas fa-edit"></i> Editar Ordem de Serviço
+                            </a>
                         </div>
                     </div>
                     <div class="card-body">

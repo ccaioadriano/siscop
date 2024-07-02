@@ -15,27 +15,33 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home route
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/ordens-de-servicos', [OrdemServicoController::class, 'index'])->name("ordemServico.index");
+// Agrupando rotas de Ordem de Serviço
+Route::prefix('ordem-de-servico')->name('ordemServico.')->group(function () {
+    Route::get('/', [OrdemServicoController::class, 'index'])->name('index');
+    Route::get('/nova', [OrdemServicoController::class, 'create'])->name('create');
+    Route::get('/{id}', [OrdemServicoController::class, 'show'])->name('show');
+    Route::get('/{id}/editar', [OrdemServicoController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [OrdemServicoController::class, 'update'])->name('update');
+    Route::post('/store', [OrdemServicoController::class, 'store'])->name('store');
+    Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('calcularMetrica');
+});
 
-Route::get('/ordem-de-servico/nova', [OrdemServicoController::class, 'create'])->name("ordemServico.create");
+// Agrupando rotas de Contratos
+Route::prefix('contratos')->name('contrato.')->group(function () {
+    Route::get('/', [ContratoController::class, 'index'])->name('index');
+    Route::get('/{id}', [ContratoController::class, 'show'])->name('show');
+    Route::post('/retorna-valores', [ContratoController::class, 'getValores'])->name('getValores');
 
-Route::get('/ordem-de-servico/{id}', [OrdemServicoController::class, 'show'])->name('ordemServico.show');
-Route::get('/ordem-de-servico/{id}/editar', [OrdemServicoController::class, 'edit'])->name('ordemServico.edit');
-Route::put('/ordem-de-servico/update/{id}', [OrdemServicoController::class, 'update'])->name('ordemServico.update');
+    Route::get('/{id}/vigencia/nova', [ContratoController::class, 'createVigencia'])->name('vigencia.create');
+    Route::post('/vigencia/store', [ContratoController::class, 'storeVigencia'])->name('vigencia.store');
+});
 
-Route::post('/ordem-de-servico/store', [OrdemServicoController::class, 'store'])->name("ordemServico.store");
-
-Route::post('/retorna-valores', [ContratoController::class, 'getValores'])->name('contrato.getValores');
-
-Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('ordemServico.calcularMetrica');
-
-Route::get('/contratos', [ContratoController::class, 'index'])->name('contrato.index');
-Route::get('/contratos/{id}', [ContratoController::class, 'show'])->name('contrato.show');
-
+// Rota fallback para páginas não encontradas
 Route::fallback(function () {
-    return view("layouts.error");
+    return view('layouts.error');
 });

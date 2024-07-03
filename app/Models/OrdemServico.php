@@ -36,7 +36,7 @@ class OrdemServico extends Model
 
     public function nota_fiscal()
     {
-        return $this->belongsTo(NotaFiscal::class);
+        return $this->belongsTo(NotaFiscal::class, 'nota_id');
     }
 
     public function sistema()

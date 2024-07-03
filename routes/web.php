@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\NotaFiscalController;
 use App\Http\Controllers\OrdemServicoController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,7 +22,7 @@ Route::get('/', function () {
 });
 
 // Agrupando rotas de Ordem de Serviço
-Route::prefix('ordem-de-servico')->name('ordemServico.')->group(function () {
+Route::prefix('ordens-de-servico')->name('ordemServico.')->group(function () {
     Route::get('/', [OrdemServicoController::class, 'index'])->name('index');
     Route::get('/nova', [OrdemServicoController::class, 'create'])->name('create');
     Route::get('/{id}', [OrdemServicoController::class, 'show'])->name('show');
@@ -39,6 +40,11 @@ Route::prefix('contratos')->name('contrato.')->group(function () {
 
     Route::get('/{id}/vigencia/nova', [ContratoController::class, 'createVigencia'])->name('vigencia.create');
     Route::post('/vigencia/store', [ContratoController::class, 'storeVigencia'])->name('vigencia.store');
+});
+
+Route::prefix('notas-fiscais')->name('notaFiscal.')->group(function () {
+    Route::get('/', [NotaFiscalController::class, 'index'])->name('index');
+    Route::get('/{id}', [NotaFiscalController::class, 'show'])->name('show');
 });
 
 // Rota fallback para páginas não encontradas

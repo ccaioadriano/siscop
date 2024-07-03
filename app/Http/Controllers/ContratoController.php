@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVigenciaRequest;
 use App\Models\Contrato;
 use App\Models\Vigencia;
 use Carbon\Carbon;
@@ -67,12 +68,13 @@ class ContratoController extends Controller
         return view('contrato.vigencia.create', compact('contrato'));
     }
 
-    public function storeVigencia(Request $request)
+    public function storeVigencia(StoreVigenciaRequest $request)
     {
         $vigencia = new Vigencia();
         $vigencia->fill($request->except(['valor_ponto_funcao', 'valor_hora']));
         $vigencia->valor_ponto_funcao = $this->clearNumbers($request->valor_ponto_funcao);
         $vigencia->valor_hora = $this->clearNumbers($request->valor_hora);
+        //dd($vigencia);
         $vigencia->save();
         return redirect(route("contrato.show", $request->contrato_id))->with('success', 'Vigencia incluida com sucesso.');
     }

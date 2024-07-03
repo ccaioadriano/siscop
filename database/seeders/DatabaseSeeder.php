@@ -6,7 +6,9 @@ namespace Database\Seeders;
 
 use App\Models\Contrato;
 use App\Models\Metrica;
+use App\Models\NotaFiscal;
 use App\Models\Sistema;
+use App\Models\Vigencia;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
@@ -26,20 +28,21 @@ class DatabaseSeeder extends Seeder
         Sistema::create(['nome' => 'INPACTO']);
         Sistema::create(['nome' => 'GIEFS']);
 
-        // Contrato vigente
-        Contrato::create([
-            'data_inicio' => Carbon::now()->subMonths(3)->format('Y-m-d'),  // 3 meses atrás
-            'data_fim' => Carbon::now()->addMonths(9)->format('Y-m-d'),    // 9 meses à frente
-            'valor_ponto_funcao' => 100.00,
-            'valor_hora' => 75.00,
-        ]);
-
         // Contrato não vigente
-        Contrato::create([
+        Contrato::create();
+
+        Vigencia::create([
+            'contrato_id' => 1,
             'data_inicio' => Carbon::now()->subYears(1)->subMonths(6)->format('Y-m-d'),  // 1 ano e 6 meses atrás
             'data_fim' => Carbon::now()->subMonths(3)->format('Y-m-d'),                 // 3 meses atrás
             'valor_ponto_funcao' => 95.00,
             'valor_hora' => 70.00,
+        ]);
+
+        NotaFiscal::create([
+            'contrato_id' => 1,
+            'data_emissao' => Carbon::now(),
+            'valor_total' => 0,
         ]);
     }
 }

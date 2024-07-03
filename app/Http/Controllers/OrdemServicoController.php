@@ -33,13 +33,13 @@ class OrdemServicoController extends Controller
     {
         $metricas = Metrica::all();
         $sistemas = Sistema::all();
-
+        $notas_fiscais = NotaFiscal::all();
         //retorna somente os contratos com vigencia ativa
         $contratos_vigentes = Contrato::whereHas('vigencias', function ($query) {
             $query->where('data_inicio', '<=', Carbon::now())
                 ->where('data_fim', '>=', Carbon::now());
         })->get();
-        return view("ordemServico.create", compact("metricas", "sistemas", "contratos_vigentes"));
+        return view("ordemServico.create", compact("metricas", "sistemas", "contratos_vigentes", 'notas_fiscais'));
     }
 
     public function show(int $id)
@@ -56,6 +56,7 @@ class OrdemServicoController extends Controller
                 'sei' => 'required',
                 'sistema_id' => 'required',
                 'qtd_estimada' => 'required',
+                'nota_id' => 'nullable',
                 'metrica_id' => 'required',
             ],
         );
@@ -64,6 +65,12 @@ class OrdemServicoController extends Controller
         $ordemServico->fill($request->except('valor_total'));
         $ordemServico->valor_total = $this->clearNumbers($request->valor_total);
         $ordemServico->save();
+
+        if ($ordemServico->nota_id) {
+            $notaFiscal = NotaFiscal::find($ordemServico->nota_id);
+            $this->atualizaValorNota($notaFiscal);
+        }
+
         return redirect(route("ordemServico.index"))->with('success', 'Ordem de serviço criada com sucesso.');
     }
 
@@ -96,6 +103,7 @@ class OrdemServicoController extends Controller
         ]);
 
         $ordemServico = OrdemServico::find($id);
+        $notaFiscalAnterior = $ordemServico->nota_fiscal;
         $ordemServico->contrato_id = $request->input('contrato_id');
         $ordemServico->sei = $request->input('sei');
         $ordemServico->sistema_id = $request->input('sistema_id');
@@ -106,6 +114,17 @@ class OrdemServicoController extends Controller
         $ordemServico->valor_total = $this->clearNumbers($request->input('valor_total'));
         $ordemServico->descricao = $request->input('descricao');
         $ordemServico->save();
+
+        // Atualiza a nota fiscal antiga, se houver
+        if ($notaFiscalAnterior) {
+            $this->atualizaValorNota($notaFiscalAnterior);
+        }
+
+        // Atualiza a nova nota fiscal, se houver
+        if ($ordemServico->nota_id) {
+            $notaFiscalNova = NotaFiscal::find($ordemServico->nota_id);
+            $this->atualizaValorNota($notaFiscalNova);
+        }
 
         return redirect()->route('ordemServico.show', $id)->with('success', 'Ordem de Serviço atualizada com sucesso!');
     }

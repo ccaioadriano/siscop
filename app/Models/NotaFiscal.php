@@ -9,4 +9,14 @@ class NotaFiscal extends Model
 {
     use HasFactory;
     protected $table = "notas_fiscais";
+
+    public function contrato()
+    {
+        return $this->belongsTo(Contrato::class);
+    }
+
+    public function ordensServico()
+    {
+        return $this->hasMany(OrdemServico::class, 'nota_id');
+    }
 }

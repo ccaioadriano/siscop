@@ -52,6 +52,24 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">NOTA FISCAL:</h6>
+                                    <select
+                                        class="form-control form-control-sm @error('nota_id') is-invalid @enderror"
+                                        id="nota_id" name="nota_id">
+                                        <option value="">Selecione uma nota fiscal</option>
+                                        @foreach ($notas_fiscais as $nota)
+                                            <option value="{{ $nota->id }}"
+                                                {{ old('nota_id', $ordem->nota_id) == $nota->id ? 'selected' : '' }}>
+                                                {{ $nota->id }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    @error('nota_fiscal_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -161,7 +179,7 @@
             var contrato_id = $('#contrato_id').val() != null ? $('#contrato_id').val() : null;
             var metrica_id = $('#metrica_id').val();
             var qtd_realizada = $('#qtd_realizada').val() > 0 ? $('#qtd_realizada').val() : $('#qtd_estimada')
-        .val();
+                .val();
 
             $.ajax({
                 url: '{{ route('contrato.getValores') }}',

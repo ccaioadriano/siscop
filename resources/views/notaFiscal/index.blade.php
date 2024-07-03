@@ -1,12 +1,12 @@
 @extends('layouts.default')
-@section('title', 'Ordens de Serviços')
+@section('title', 'Notas Fiscais')
 @section('content')
     <main class="container mt-5">
-        <h2 class="mb-4">Ordens de Serviço</h2>
+        <h2 class="mb-4">Notas Fiscais</h2>
         @include('layouts.partials.flash-messages')
         <!-- Formulário de Pesquisa -->
         <div class="mb-4 d-flex justify-content-end">
-            <form action="{{ route('ordemServico.index') }}" method="GET" class="d-flex" style="width: 400px;">
+            <form action="{{ route('notaFiscal.index') }}" method="GET" class="d-flex" style="width: 400px;">
                 <input type="text" name="search" class="form-control form-control-sm me-2"
                     placeholder="Pesquisar por Nº OS, Nº CONTRATO ou SISTEMA" value="{{ request()->query('search') }}">
                 <button type="submit" class="btn btn-sm btn-primary">
@@ -17,39 +17,26 @@
 
         <!-- Botão para cadastrar nova ordem de serviço -->
         <div class="mb-4">
-            <a href="{{ route('ordemServico.create') }}" class="btn btn text-light bg-custom">Cadastrar Nova Ordem de
-                Serviço</a>
+            <a href="{{-- route('notaFiscal.create') --}}" class="btn btn text-light bg-custom">Cadastrar Nota Fiscal</a>
         </div>
 
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Nº OS:</th>
+                        <th>Nº NOTA FISCAL:</th>
                         <th>Nº CONTRATO</th>
-                        <th>Nº PROCESSO</th>
-                        <th>SISTEMA</th>
-                        <th>QTD. REALIZADA</th>
-                        <th>NOTA FISCAL</th>
-                        <th>VALOR DA OS</th>
+                        <th>DATA DE EMISSÃO</th>
+                        <th>VALOR TOTAL</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($ordens as $ordem)
-                        <tr data-href="{{ route('ordemServico.show', $ordem->id) }}">
-                            <td>{{ $ordem->id }}</td>
-                            <td>{{ $ordem->contrato_id }}</td>
-                            <td>{{ $ordem->sei }}</td>
-                            <td>{{ $ordem->sistema->nome }}</td>
-                            <td>{{ $ordem->qtd_realizada . '/' . $ordem->metrica->tipo }}</td>
-                            <td>
-                                @if ($ordem->nota_id != null)
-                                    {{ $ordem->nota_fiscal->id }}
-                                @else
-                                    <span class="text-muted">N/A</span>
-                                @endif
-                            </td>
-                            <td>R$ {{ number_format($ordem->valor_total, 2, ',', '.') }}</td>
+                    @foreach ($notas as $nota)
+                        <tr data-href="{{ route('notaFiscal.show', $nota->id) }}">
+                            <td>{{ $nota->id }}</td>
+                            <td>{{ $nota->contrato_id }}</td>
+                            <td>{{ \Carbon\Carbon::parse($nota->data_emissao)->format('d/m/Y') }}</td>
+                            <td>R$ {{ number_format($nota->valor_total, 2, ',', '.') }}</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -58,7 +45,7 @@
 
         <!-- Exibir links de paginação -->
         <div class="d-flex justify-content-center mt-4">
-            {{ $ordens->appends(['search' => request()->query('search')])->links('pagination::bootstrap-4') }}
+            {{ $notas->appends(['search' => request()->query('search')])->links('pagination::bootstrap-4') }}
         </div>
     </main>
 @endsection

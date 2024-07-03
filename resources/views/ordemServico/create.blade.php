@@ -38,6 +38,21 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                <div class="col-md-4">
+                    <h6 class="fw-bold">NOTA FISCAL:</h6>
+                    <select class="form-control form-control-sm @error('nota_id') is-invalid @enderror" id="nota_id"
+                        name="nota_id">
+                        <option value="">Selecione uma nota fiscal</option>
+                        @foreach ($notas_fiscais as $nota)
+                            <option value="{{ $nota->id }}">
+                                {{ $nota->id }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('nota_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
 
                 <div class="form-group col-md-4">
                     <label for="sei" class="fw-bold">Nº PROCESSO</label>

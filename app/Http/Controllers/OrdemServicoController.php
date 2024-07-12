@@ -185,4 +185,18 @@ class OrdemServicoController extends Controller
             return response()->json(['erro' => $exception->getMessage()], 500);
         }
     }
+
+    public function destroy(int $id)
+    {
+        $ordemServico = OrdemServico::find($id);
+        $notaFiscal = $ordemServico->nota_fiscal;
+
+        $ordemServico->delete();
+
+        if ($notaFiscal) {
+            $this->atualizaValorNota($notaFiscal);
+        }
+
+        return redirect()->route('ordemServico.index')->with('success', 'Ordem de Serviço removida com sucesso!');
+    }
 }

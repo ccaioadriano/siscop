@@ -15,7 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger("contrato_id");
 
             $table->date('data_emissao')->default(now());
-            $table->decimal('valor_total', 20, 2);
+            $table->decimal('valor_total', 20, 2)->default(0.00);
 
             $table->foreign('contrato_id')->references('id')->on('contratos');
         });

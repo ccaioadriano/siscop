@@ -1,6 +1,6 @@
 @extends('layouts.default')
 
-@section('title', 'Visualizar Contrato')
+@section('title', 'Visualizar Nota Fiscal')
 
 @section('content')
     <main class="container mt-5">
@@ -10,14 +10,15 @@
                 <div class="card shadow-lg">
                     <div class="card-header bg-custom text-light">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h3 class="card-title mb-0">Nota Fiscal: <span style="color: #ffdd57">{{ $nota->id }}</span></h3>
+                            <h3 class="card-title mb-0">Nota Fiscal: <span style="color: #ffdd57">{{ $nota->id }}</span>
+                            </h3>
                             <div>
-                                <a href="{{-- route('contrato.edit', $contrato->id) --}}" class="btn btn-warning">
+                                <a href="{{ route('notaFiscal.edit', $nota->id) }}" class="btn btn-warning">
                                     <i class="fas fa-edit"></i> Editar Nota
                                 </a>
-                                <a href="{{-- route('documento.create', ['contrato_id' => $contrato->id]) --}}" class="btn btn-primary ml-3">
+                                {{-- <a href="{{ route('documento.create', ['contrato_id' => $contrato->id]) }}" class="btn btn-primary ml-3">
                                     <i class="fas fa-file-upload"></i> Incluir Documento
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>

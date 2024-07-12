@@ -30,6 +30,7 @@ Route::prefix('ordens-de-servico')->name('ordemServico.')->group(function () {
     Route::put('/update/{id}', [OrdemServicoController::class, 'update'])->name('update');
     Route::post('/store', [OrdemServicoController::class, 'store'])->name('store');
     Route::post('/calcular-metrica', [OrdemServicoController::class, 'calcularMetrica'])->name('calcularMetrica');
+    Route::delete('/{id}', [OrdemServicoController::class, 'destroy'])->name('destroy');
 });
 
 // Agrupando rotas de Contratos
@@ -44,6 +45,10 @@ Route::prefix('contratos')->name('contrato.')->group(function () {
 
 Route::prefix('notas-fiscais')->name('notaFiscal.')->group(function () {
     Route::get('/', [NotaFiscalController::class, 'index'])->name('index');
+    Route::get('/nova', [NotaFiscalController::class, 'create'])->name('create');
+    Route::post('/store', [NotaFiscalController::class, 'store'])->name('store');
+    Route::get('/{id}/editar', [NotaFiscalController::class, 'edit'])->name('edit');
+    Route::put('/update/{id}', [NotaFiscalController::class, 'update'])->name('update');
     Route::get('/{id}', [NotaFiscalController::class, 'show'])->name('show');
 });
 

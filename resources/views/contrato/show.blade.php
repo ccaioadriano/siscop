@@ -15,9 +15,9 @@
                                 <a href="{{-- route('contrato.edit', $contrato->id) --}}" class="btn btn-warning">
                                     <i class="fas fa-edit"></i> Editar Contrato
                                 </a>
-                                <a href="{{-- route('documento.create', ['contrato_id' => $contrato->id]) --}}" class="btn btn-primary ml-3">
+                                {{-- <a href="{{ route('documento.create', ['contrato_id' => $contrato->id]) }}" class="btn btn-primary ml-3">
                                     <i class="fas fa-file-upload"></i> Incluir Documento
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>

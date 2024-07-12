@@ -34,10 +34,6 @@
                             @method('PUT')
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <h6 class="fw-bold">Nº OS:</h6>
-                                    <p class="text-muted">{{ $ordem->id }}</p>
-                                </div>
-                                <div class="col-md-6">
                                     <h6 class="fw-bold">Nº CONTRATO:</h6>
                                     <select class="form-control form-control-sm @error('contrato_id') is-invalid @enderror"
                                         id="contrato_id" name="contrato_id">

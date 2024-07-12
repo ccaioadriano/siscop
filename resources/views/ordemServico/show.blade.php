@@ -12,21 +12,28 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h3 class="card-title mb-0">Ordem de Serviço: <span
                                     style="color: #ffdd57">{{ $ordem->id }}</span></h3>
-                            <a href="{{ route('ordemServico.edit', $ordem->id) }}" class="btn btn-warning">
-                                <i class="fas fa-edit"></i> Editar Ordem de Serviço
-                            </a>
+                            <div>
+                                <a href="{{ route('ordemServico.edit', $ordem->id) }}" class="btn btn-warning">
+                                    <i class="fas fa-edit"></i> Editar Ordem de Serviço
+                                </a>
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash-alt"></i> Excluir Ordem de Serviço
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <h6 class="fw-bold">Nº OS:</h6>
-                                <p class="text-muted">{{ $ordem->id }}</p>
-                            </div>
-                            <div class="col-md-6">
                                 <h6 class="fw-bold">Nº CONTRATO:</h6>
                                 <p class="text-muted">{{ $ordem->contrato_id }}</p>
                             </div>
+                            @if ($ordem->nota_fiscal)
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">Nº NOTA FISCAL:</h6>
+                                    <p class="text-muted">{{ $ordem->nota_fiscal->id }}</p>
+                                </div>
+                            @endif
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
@@ -66,4 +73,27 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza de que deseja excluir esta Ordem de Serviço?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="deleteForm" action="{{ route('ordemServico.destroy', $ordem->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

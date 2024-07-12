@@ -29,7 +29,7 @@
                                     <h6 class="fw-bold">DATA INICIO:</h6>
                                     <input type="date"
                                         class="form-control form-control-sm @error('data_inicio') is-invalid @enderror"
-                                        id="data_inicio" name="data_inicio" value="{{ old('data_inicio') }}">
+                                        id="data_inicio" name="data_inicio" value="{{ old('data_inicio', date('Y-m-d')) }}">
                                     @error('data_inicio')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -38,7 +38,7 @@
                                     <h6 class="fw-bold">DATA FIM:</h6>
                                     <input type="date"
                                         class="form-control form-control-sm @error('data_fim') is-invalid @enderror"
-                                        id="data_fim" name="data_fim" value="{{ old('data_fim') }}">
+                                        id="data_fim" name="data_fim" value="{{ old('data_fim', date('Y-m-d')) }}">
                                     @error('data_fim')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

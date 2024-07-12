@@ -17,7 +17,7 @@
 
         <!-- Botão para cadastrar nova ordem de serviço -->
         <div class="mb-4">
-            <a href="{{-- route('notaFiscal.create') --}}" class="btn btn text-light bg-custom">Cadastrar Nota Fiscal</a>
+            <a href="{{ route('notaFiscal.create') }}" class="btn btn text-light bg-custom">Cadastrar Nota Fiscal</a>
         </div>
 
         <div class="table-responsive">

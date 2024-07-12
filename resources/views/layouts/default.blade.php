@@ -17,8 +17,13 @@
 <body>
     <header class="bg-custom text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
-            <div class="logo">
-                <h1 class="h3 mb-0">SISCOP</h1>
+            <div class="d-flex align-items-center">
+                <button onclick="window.history.back()" class="btn btn-light me-3">
+                    <i class="fas fa-arrow-left"></i> Voltar
+                </button>
+                <div class="logo">
+                    <h1 class="h3 mb-0">SISCOP</h1>
+                </div>
             </div>
             <nav>
                 <ul class="nav">

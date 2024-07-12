@@ -76,6 +76,9 @@ class ContratoController extends Controller
         $vigencia->valor_hora = $this->clearNumbers($request->valor_hora);
         //dd($vigencia);
         $vigencia->save();
+
+        
+
         return redirect(route("contrato.show", $request->contrato_id))->with('success', 'Vigencia incluida com sucesso.');
     }
 }

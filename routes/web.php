@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\NotaFiscalController;
 use App\Http\Controllers\OrdemServicoController;
+use App\Models\NotaFiscal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,7 @@ Route::prefix('notas-fiscais')->name('notaFiscal.')->group(function () {
     Route::get('/{id}/editar', [NotaFiscalController::class, 'edit'])->name('edit');
     Route::put('/update/{id}', [NotaFiscalController::class, 'update'])->name('update');
     Route::get('/{id}', [NotaFiscalController::class, 'show'])->name('show');
+    Route::delete('/{id}', [NotaFiscalController::class, 'destroy'])->name('destroy');
 });
 
 // Rota fallback para páginas não encontradas

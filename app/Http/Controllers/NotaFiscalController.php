@@ -88,4 +88,17 @@ class NotaFiscalController extends Controller
 
         return redirect()->route('notaFiscal.show', $id)->with('success', 'Nota Fiscal atualizada com sucesso!');
     }
+
+    public function destroy(int $id)
+    {
+        $notaFiscal = NotaFiscal::find($id);
+        foreach ($notaFiscal->ordensServico as $os) {
+            $os->nota_id = null;
+            $os->save();
+        }
+        $notaFiscal->delete();
+
+
+        return redirect()->route('notaFiscal.index')->with('success', 'Nota Fiscal Removida com sucesso removida com sucesso!');
+    }
 }

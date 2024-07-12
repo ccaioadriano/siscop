@@ -16,9 +16,9 @@
                                 <a href="{{ route('notaFiscal.edit', $nota->id) }}" class="btn btn-warning">
                                     <i class="fas fa-edit"></i> Editar Nota
                                 </a>
-                                {{-- <a href="{{ route('documento.create', ['contrato_id' => $contrato->id]) }}" class="btn btn-primary ml-3">
-                                    <i class="fas fa-file-upload"></i> Incluir Documento
-                                </a> --}}
+                                <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                                    <i class="fas fa-trash-alt"></i> Excluir Nota Fiscal
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -74,4 +74,27 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza de que deseja excluir esta Nota Fiscal?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <form id="deleteForm" action="{{ route('notaFiscal.destroy', $nota->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

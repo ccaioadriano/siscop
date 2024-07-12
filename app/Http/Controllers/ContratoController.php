@@ -77,8 +77,6 @@ class ContratoController extends Controller
         //dd($vigencia);
         $vigencia->save();
 
-        
-
         return redirect(route("contrato.show", $request->contrato_id))->with('success', 'Vigencia incluida com sucesso.');
     }
 }

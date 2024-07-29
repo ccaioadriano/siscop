@@ -13,11 +13,15 @@
     <div class="container">
         <div class="row justify-content-center align-items-center vh-100">
             <div class="col-md-6 text-center">
-                <p class="lead">Página não encontrada. Retorne clicando <a href="/">aqui</a></p>
+                @auth
+                    <p class="lead">Página não encontrada. Retorne clicando <a href="{{ route('home') }}">aqui</a></p>
+                @endauth
+                @guest
+                    <p class="lead">Página não encontrada. Retorne clicando <a href="{{ route('entrar') }}">aqui</a></p>
+                @endguest
             </div>
         </div>
     </div>
-    <!-- Incluindo o JavaScript do Bootstrap via CDN -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

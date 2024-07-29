@@ -24,6 +24,10 @@
                 <div class="logo">
                     <h1 class="h3 mb-0">SISCOP</h1>
                 </div>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button>Deslogar</button>
+                </form>
             </div>
             <nav>
                 <ul class="nav">

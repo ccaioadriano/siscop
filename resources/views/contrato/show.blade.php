@@ -10,9 +10,10 @@
                 <div class="card shadow-lg">
                     <div class="card-header bg-custom text-light">
                         <div class="d-flex align-items-center justify-content-between">
-                            <h3 class="card-title mb-0">Contrato: <span style="color: #ffdd57">{{ $contrato->id }}</span></h3>
+                            <h3 class="card-title mb-0">Contrato: <span style="color: #ffdd57">{{ $contrato?->id }}</span>
+                            </h3>
                             <div>
-                                <a href="{{-- route('contrato.edit', $contrato->id) --}}" class="btn btn-warning">
+                                <a href="{{ route('contrato.edit', $contrato->id) }}" class="btn btn-warning">
                                     <i class="fas fa-edit"></i> Editar Contrato
                                 </a>
                                 {{-- <a href="{{ route('documento.create', ['contrato_id' => $contrato->id]) }}" class="btn btn-primary ml-3">
@@ -25,12 +26,14 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <h6 class="fw-bold">GESTOR DO CONTRATO:</h6>
-                                <p class="text-muted">CAIO</p>
+                                <p class="text-muted">{{ $contrato->gestor->name }}</p>
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="fw-bold">CONTRATADA:</h6>
-                                <p class="text-muted">SUPERA</p>
-                            </div>
+                            @if ($contrato->contratada)
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold">CONTRATADA:</h6>
+                                    <p class="text-muted">{{ $contrato->contratada }}</p>
+                                </div>
+                            @endif
                         </div>
                         <hr>
                         <div class="row mb-3">
@@ -58,7 +61,8 @@
                                     </tbody>
                                 </table>
                                 <div class="row">
-                                    <a href="{{ route('contrato.vigencia.create', $contrato->id) }}" class="btn btn-success col-md-2 ms-auto me-3">
+                                    <a href="{{ route('contrato.vigencia.create', $contrato->id) }}"
+                                        class="btn btn-success col-md-2 ms-auto me-3">
                                         <i class="fas fa-plus"></i> Adicionar Vigência
                                     </a>
                                 </div>

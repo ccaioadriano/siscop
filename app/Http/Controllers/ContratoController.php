@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVigenciaRequest;
 use App\Models\Contrato;
+use App\Models\User;
 use App\Models\Vigencia;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,14 +13,7 @@ class ContratoController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Contrato::whereHas('vigencias');
-
-        if ($request->has('search')) {
-            $search = $request->input('search');
-            $query->where('id', 'LIKE', "%{$search}%");
-        }
-
-        $contratos = $query->with(['vigencias'])->paginate(10);
+        $contratos = Contrato::all();
 
         return view('contrato.index', compact('contratos'));
     }
@@ -28,6 +22,63 @@ class ContratoController extends Controller
     {
         $contrato = Contrato::find($id);
         return view('contrato.show', compact('contrato'));
+    }
+
+    public function create()
+    {
+        $gestores = User::all();
+        return view('contrato.create', compact('gestores'));
+    }
+
+    public function store(Request $request)
+    {
+        $contrato = new Contrato();
+        $contrato->gestor_id = $request->gestor_id;
+        $contrato->contratada = $request->contratada;
+        $contrato->save();
+        $contrato->vigencias()->create([
+            'data_inicio' => $request->data_inicio,
+            'data_fim' => $request->data_fim,
+            'valor_ponto_funcao' => $this->clearNumbers($request->valor_ponto_funcao),
+            'valor_hora' => $this->clearNumbers($request->valor_hora),
+        ])->save();
+
+        return redirect(route("contrato.index"))->with('success', 'Contrato incluido com sucesso.');
+    }
+
+    public function edit(int $id)
+    {
+        $contrato = Contrato::find($id);
+        $gestores = User::all();
+        return view("contrato.edit", compact('contrato', 'gestores'));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        // Validação dos dados enviados
+        // $request->validate([
+        //     'gestor_id' => 'required|exists:gestores,id',
+        //     'data_inicio' => 'required|date',
+        //     'data_fim' => 'required|date|after_or_equal:data_inicio',
+        //     'valor_ponto_funcao' => 'required|numeric|min:0',
+        //     'valor_hora' => 'required|numeric|min:0',
+        //     'contratada' => 'required|string|max:255',
+        // ]);
+
+        // Encontrar o contrato pelo ID
+        $contrato = Contrato::findOrFail($id);
+        $contrato->update([
+            'gestor_id' => $request->gestor_id,
+            $contrato->ultimaVigencia()->update([
+                'data_inicio' => $request->data_inicio,
+                'data_fim' => $request->data_fim,
+                'valor_ponto_funcao' => $this->clearNumbers($request->valor_ponto_funcao),
+                'valor_hora' => $this->clearNumbers($request->valor_hora),
+            ]),
+            'contratada' => $request->contratada,
+        ]);
+
+        return redirect(route("contrato.show", $id))->with('success', 'Contrato alterado com sucesso.');
     }
 
     public function getValores(Request $request)
@@ -58,8 +109,6 @@ class ContratoController extends Controller
             return response()->json(['erro' => $exception->getMessage()], 500);
         }
     }
-
-    //criar vigencia
     public function createVigencia(int $contrato_id)
     {
 
@@ -74,7 +123,6 @@ class ContratoController extends Controller
         $vigencia->fill($request->except(['valor_ponto_funcao', 'valor_hora']));
         $vigencia->valor_ponto_funcao = $this->clearNumbers($request->valor_ponto_funcao);
         $vigencia->valor_hora = $this->clearNumbers($request->valor_hora);
-        //dd($vigencia);
         $vigencia->save();
 
         return redirect(route("contrato.show", $request->contrato_id))->with('success', 'Vigencia incluida com sucesso.');

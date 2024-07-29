@@ -15,6 +15,11 @@
             </form>
         </div>
 
+        <!-- Botão para cadastrar nova ordem de serviço -->
+        <div class="mb-4">
+            <a href="{{ route('contrato.create') }}" class="btn btn text-light bg-custom">Cadastrar Novo Contrato</a>
+        </div>
+
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -28,29 +33,39 @@
                 <tbody>
                     @foreach ($contratos as $contrato)
                         @php
-                            $isExpired = \Carbon\Carbon::parse($contrato->ultimaVigencia()->data_fim)->isPast();
+                            $ultimaVigencia = $contrato->ultimaVigencia();
+                            $isExpired = $ultimaVigencia
+                                ? \Carbon\Carbon::parse($ultimaVigencia->data_fim)->isPast()
+                                : false;
                         @endphp
-                        <tr class="clickable-row {{ $isExpired ? 'table-danger' : '' }}"
-                            data-href="{{ route('contrato.show', $contrato->id) }}">
-                            <td>{{ $contrato->id }}</td>
-                            <td>
-                                <span
-                                    class="fw-bold">{{ \Carbon\Carbon::parse($contrato->ultimaVigencia()->data_inicio)->format('d/m/Y') }}</span>
-                                -
-                                <span
-                                    class="fw-bold">{{ \Carbon\Carbon::parse($contrato->ultimaVigencia()->data_fim)->format('d/m/Y') }}</span>
-                            </td>
-                            <td>R$ {{ number_format($contrato->ultimaVigencia()->valor_ponto_funcao, 2, ',', '.') }}</td>
-                            <td>R$ {{ number_format($contrato->ultimaVigencia()->valor_hora, 2, ',', '.') }}</td>
-                        </tr>
+                        @if ($contrato->vigencias()->count() > 0)
+                            <tr class="clickable-row {{ $isExpired ? 'table-danger' : '' }}"
+                                data-href="{{ route('contrato.show', $contrato->id) }}">
+                                <td>{{ $contrato->id }}</td>
+                                <td>
+                                    @if ($ultimaVigencia)
+                                        <span
+                                            class="fw-bold">{{ \Carbon\Carbon::parse($ultimaVigencia->data_inicio)->format('d/m/Y') }}</span>
+                                        -
+                                        <span
+                                            class="fw-bold">{{ \Carbon\Carbon::parse($ultimaVigencia->data_fim)->format('d/m/Y') }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ultimaVigencia)
+                                        R$ {{ number_format($ultimaVigencia->valor_ponto_funcao, 2, ',', '.') }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($ultimaVigencia)
+                                        R$ {{ number_format($ultimaVigencia->valor_hora, 2, ',', '.') }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
-        </div>
-
-        <!-- Exibir links de paginação -->
-        <div class="d-flex justify-content-center mt-4">
-            {{ $contratos->appends(['search' => request()->query('search')])->links('pagination::bootstrap-4') }}
         </div>
     </main>
 @endsection

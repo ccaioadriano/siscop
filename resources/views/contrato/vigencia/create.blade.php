@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('contrato.vigencia.store') }}" method="POST">
+                        <form action="{{ route('contrato.vigencia.store') }}" method="POST" id="createForm">
                             @csrf
 
                             <div class="row mb-3">
@@ -80,19 +80,21 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.maskMoney.min.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/inputmask/dist/jquery.inputmask.min.js"></script>
     <script>
         $(document).ready(function() {
-            $("#valor_hora").maskMoney({
+            // Inicializando a máscara de dinheiro
+            $("#valor_hora, #valor_ponto_funcao").maskMoney({
                 prefix: 'R$ ',
                 thousands: '.',
                 decimal: ',',
-            })
-            $("#valor_ponto_funcao").maskMoney({
-                prefix: 'R$ ',
-                thousands: '.',
-                decimal: ',',
-            })
-        })
+            });
+
+        });
+        $("#createForm").submit(function() {
+            $("#valor_hora, #valor_ponto_funcao").each(function() {
+                var value = $(this).maskMoney('unmasked')[0];
+                $(this).val(value);
+            });
+        });
     </script>
 @endsection

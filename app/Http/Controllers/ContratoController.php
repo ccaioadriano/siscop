@@ -67,14 +67,17 @@ class ContratoController extends Controller
 
         // Encontrar o contrato pelo ID
         $contrato = Contrato::findOrFail($id);
+
+
+        $contrato->ultimaVigencia()->update([
+            'data_inicio' => $request->data_inicio,
+            'data_fim' => $request->data_fim,
+            'valor_ponto_funcao' => $request->valor_ponto_funcao,
+            'valor_hora' => $request->valor_hora,
+        ]);
+
         $contrato->update([
             'gestor_id' => $request->gestor_id,
-            $contrato->ultimaVigencia()->update([
-                'data_inicio' => $request->data_inicio,
-                'data_fim' => $request->data_fim,
-                'valor_ponto_funcao' => $this->clearNumbers($request->valor_ponto_funcao),
-                'valor_hora' => $this->clearNumbers($request->valor_hora),
-            ]),
             'contratada' => $request->contratada,
         ]);
 
@@ -121,8 +124,8 @@ class ContratoController extends Controller
     {
         $vigencia = new Vigencia();
         $vigencia->fill($request->except(['valor_ponto_funcao', 'valor_hora']));
-        $vigencia->valor_ponto_funcao = $this->clearNumbers($request->valor_ponto_funcao);
-        $vigencia->valor_hora = $this->clearNumbers($request->valor_hora);
+        $vigencia->valor_ponto_funcao = $request->valor_ponto_funcao;
+        $vigencia->valor_hora = $request->valor_hora;
         $vigencia->save();
 
         return redirect(route("contrato.show", $request->contrato_id))->with('success', 'Vigencia incluida com sucesso.');

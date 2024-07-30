@@ -19,23 +19,29 @@
                             @csrf
                             @method('PUT')
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <h6 class="fw-bold">GESTOR DO CONTRATO:</h6>
                                     <input type="text" name="gestor" class="form-control"
-                                        value="{{ old('gestor', 'CAIO') }}" disabled>
+                                        value="{{ old('gestor', $nota->contrato->gestor->name) }}" disabled>
                                 </div>
-                                <div class="col-md-6">
+
+                                <div class="col-md-4">
+                                    <h6 class="fw-bold">DATA DE EMISSÃO</h6>
+                                    <input type="date" name="data_emissao" class="form-control"
+                                        value="{{ old('data_emissao', $nota->data_emissao) }}">
+                                </div>
+                                <div class="col-md-4">
                                     <h6 class="fw-bold">CONTRATADA:</h6>
                                     <input type="text" name="contratada" class="form-control"
-                                        value="{{ old('contratada', 'SUPERA') }}" disabled>
+                                        value="{{ old('contratada', $nota->contrato->contratada) }}" disabled>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <h6 class="fw-bold">VALOR A SER PAGO:</h6>
-                                    <input name="valor_total" class="form-control disabled" id="valor_total"
+                                    <input name="valor_total" class="form-control" id="valor_total"
                                         value="R$ {{ old('valor_total', number_format($nota->valor_total, 2, ',', '.')) }}"
-                                        readonly>
+                                        disabled>
                                 </div>
                             </div>
                             <hr>

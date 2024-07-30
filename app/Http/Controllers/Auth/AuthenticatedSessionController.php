@@ -21,7 +21,7 @@ class AuthenticatedSessionController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'As credenciais fornecidas não coincidem com nossos registros.',
+            'email' => 'Usuário ou senha incorretos.',
         ]);
     }
 

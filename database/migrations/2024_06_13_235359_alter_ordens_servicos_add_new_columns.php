@@ -15,8 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger("contrato_id");
 
             $table->string("sei", 30);
-            $table->integer("qtd_estimada", unsigned: true)->default(0);
-            $table->integer("qtd_realizada", unsigned: true)->default(0);
+            $table->decimal("qtd_estimada", unsigned: true)->default(0.0);
+            $table->decimal("qtd_realizada", unsigned: true)->default(0.0);
             $table->string("sistema");
             $table->unsignedBigInteger("metrica_id");
             $table->unsignedBigInteger("nota_id")->nullable();

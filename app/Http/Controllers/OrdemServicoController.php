@@ -151,25 +151,25 @@ class OrdemServicoController extends Controller
             $vigencia_contrato = $contrato->vigencias()->where('data_inicio', '<=', Carbon::now())
                 ->where('data_fim', '>=', Carbon::now())
                 ->first();
-            $valor_total = 0;
+            $valor_total = 0.00;
 
             switch ($metrica->tipo) {
                 case 'PF':
 
                     if ($request->qtd_realizada > 0) {
-                        $valor_total = $vigencia_contrato->valor_ponto_funcao * $request->qtd_realizada;
+                        $valor_total = floatval($vigencia_contrato->valor_ponto_funcao) * floatval($request->qtd_realizada);
                     } else {
 
-                        $valor_total = $vigencia_contrato->valor_ponto_funcao * $request->qtd_estimada;
+                        $valor_total = floatval($vigencia_contrato->valor_ponto_funcao) * floatval($request->qtd_estimada);
                     }
 
                     break;
                 case 'HR':
                     if ($request->qtd_realizada > 0) {
-                        $valor_total = $vigencia_contrato->valor_hora * $request->qtd_realizada;
+                        $valor_total = floatval($vigencia_contrato->valor_hora) * floatval($request->qtd_realizada);
                     } else {
 
-                        $valor_total = $vigencia_contrato->valor_hora * $request->qtd_estimada;
+                        $valor_total = floatval($vigencia_contrato->valor_hora) * floatval($request->qtd_estimada);
                     }
                     break;
             }
@@ -179,7 +179,7 @@ class OrdemServicoController extends Controller
             }
 
             return response()->json([
-                'valor_total' => $this->formatCurrency($valor_total),
+                'valor_total' => "R$ ".number_format($valor_total, 2, ",", "."),
             ]);
         } catch (\Exception $exception) {
             return response()->json(['erro' => $exception->getMessage()], 500);

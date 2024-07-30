@@ -24,14 +24,20 @@
                     </div>
                     <div class="card-body">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <h6 class="fw-bold">GESTOR DO CONTRATO:</h6>
-                                <p class="text-muted">CAIO</p>
+                                <p class="text-muted">{{ $nota->contrato->gestor->name }}</p>
                             </div>
-                            <div class="col-md-6">
-                                <h6 class="fw-bold">CONTRATADA:</h6>
-                                <p class="text-muted">SUPERA</p>
+                            <div class="col-md-4">
+                                <h6 class="fw-bold">DATA DE EMISSÃO:</h6>
+                                <p class="text-muted">{{ \Carbon\Carbon::parse($nota->data_emissao)->format('d/m/Y') }}</p>
                             </div>
+                            @if ($nota->contrato->contratada)
+                                <div class="col-md-4">
+                                    <h6 class="fw-bold">CONTRATADA:</h6>
+                                    <p class="text-muted">{{ $nota->contrato->contratada }}</p>
+                                </div>
+                            @endif
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">

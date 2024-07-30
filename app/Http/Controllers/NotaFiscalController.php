@@ -83,6 +83,7 @@ class NotaFiscalController extends Controller
         // ]);
 
         $nota = NotaFiscal::findOrFail($id);
+        $nota->data_emissao = $request->data_emissao;
 
         $nota->save();
 

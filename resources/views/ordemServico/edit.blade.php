@@ -51,8 +51,7 @@
 
                                 <div class="col-md-6">
                                     <h6 class="fw-bold">NOTA FISCAL:</h6>
-                                    <select
-                                        class="form-control form-control-sm @error('nota_id') is-invalid @enderror"
+                                    <select class="form-control form-control-sm @error('nota_id') is-invalid @enderror"
                                         id="nota_id" name="nota_id">
                                         <option value="">Selecione uma nota fiscal</option>
                                         @foreach ($notas_fiscais as $nota)
@@ -204,7 +203,6 @@
 
 
             $.ajax({
-                // Rota para o cálculo
                 url: '{{ route('ordemServico.calcularMetrica') }}',
                 method: 'POST',
                 data: {
@@ -232,7 +230,6 @@
                 .val();
 
             $.ajax({
-                // Rota para o cálculo
                 url: '{{ route('ordemServico.calcularMetrica') }}',
                 method: 'POST',
                 data: {
@@ -250,7 +247,9 @@
                     alert(xhr.responseJSON.message);
                 }
             });
+            
         });
+
         $('#contrato_id').change(function() {
             var contrato_id = $(this).val();
             var metrica_id = $('#metrica_id').val();
@@ -277,7 +276,7 @@
                 }
             });
 
-            // Pega o valor do número do contrato selecionado
+            // Pega o valor do contrato selecionado
             $.ajax({
                 url: '{{ route('contrato.getValores') }}',
                 method: 'POST',

@@ -39,8 +39,8 @@ class ContratoController extends Controller
         $contrato->vigencias()->create([
             'data_inicio' => $request->data_inicio,
             'data_fim' => $request->data_fim,
-            'valor_ponto_funcao' => $this->clearNumbers($request->valor_ponto_funcao),
-            'valor_hora' => $this->clearNumbers($request->valor_hora),
+            'valor_ponto_funcao' => $request->valor_ponto_funcao,
+            'valor_hora' => $request->valor_hora,
         ])->save();
 
         return redirect(route("contrato.index"))->with('success', 'Contrato incluido com sucesso.');

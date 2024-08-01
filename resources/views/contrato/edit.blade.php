@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('contrato.update', $contrato->id) }}" method="POST">
+                        <form action="{{ route('contrato.update', $contrato->id) }}" method="POST" id="editForm">
                             @csrf
                             @method('PUT')
 
@@ -108,5 +108,26 @@
 
 @section('scripts')
     <script src="{{ asset('js/jquery.maskMoney.min.js') }}"></script>
-    
+
+    <script>
+        $(document).ready(function() {
+            $("#valor_hora").maskMoney({
+                prefix: 'R$ ',
+                thousands: '.',
+                decimal: ',',
+            })
+            $("#valor_ponto_funcao").maskMoney({
+                prefix: 'R$ ',
+                thousands: '.',
+                decimal: ',',
+            })
+        })
+        $("#editForm").submit(function() {
+            $("#valor_hora, #valor_ponto_funcao").each(function() {
+                var value = $(this).maskMoney('unmasked')[0];
+                $(this).val(value);
+            });
+        });
+    </script>
+
 @endsection

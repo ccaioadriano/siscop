@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('contrato.store') }}" method="POST">
+                        <form action="{{ route('contrato.store') }}" method="POST" id="createForm">
                             @csrf
 
                             <div class="row mb-3">
@@ -121,5 +121,12 @@
                 decimal: ',',
             })
         })
+
+        $("#createForm").submit(function() {
+            $("#valor_hora, #valor_ponto_funcao").each(function() {
+                var value = $(this).maskMoney('unmasked')[0];
+                $(this).val(value);
+            });
+        });
     </script>
 @endsection

@@ -5,7 +5,7 @@ use App\Http\Controllers\NotaFiscalController;
 use App\Http\Controllers\OrdemServicoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/entrar', function () {
+Route::middleware('guest')->get('/entrar', function () {
     return view("login");
 })->name("entrar");
 

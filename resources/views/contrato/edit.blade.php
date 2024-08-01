@@ -111,16 +111,6 @@
 
     <script>
         $(document).ready(function() {
-            $("#valor_hora").maskMoney({
-                prefix: 'R$ ',
-                thousands: '.',
-                decimal: ',',
-            })
-            $("#valor_ponto_funcao").maskMoney({
-                prefix: 'R$ ',
-                thousands: '.',
-                decimal: ',',
-            })
         })
         $("#editForm").submit(function() {
             $("#valor_hora, #valor_ponto_funcao").each(function() {
